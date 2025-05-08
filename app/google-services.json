@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "900880457079",
+    "project_id": "elimulinkapp-aca6e",
+    "storage_bucket": "elimulinkapp-aca6e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:900880457079:android:ce03e01bd1b5800c2f5572",
+        "android_client_info": {
+          "package_name": "com.example.bizeasy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCH3JjGg9vJukmwQ65yyqQLOpsAWZOUk8M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:900880457079:android:c600267aa0223b182f5572",
+        "android_client_info": {
+          "package_name": "com.example.elimulinkapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCH3JjGg9vJukmwQ65yyqQLOpsAWZOUk8M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
