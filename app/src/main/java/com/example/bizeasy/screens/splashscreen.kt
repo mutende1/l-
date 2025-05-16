@@ -26,14 +26,16 @@ fun SplashScreen (onNavigateToNext: () -> Unit){
     }
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(Color.White),
+        .background(Color.Black),
         contentAlignment = Alignment.Center){
         Column (horizontalAlignment = Alignment.CenterHorizontally){
             Image(painter = painterResource(id = R.drawable.logo),
                 contentDescription = "App Logo",
                 modifier = Modifier.size(128.dp))
             Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Welcome to BizEASYAPP")
+            Text(text = "Welcome to my app")
+            Text(text = "learn tech becoz the world is")
+            Text(text = "changing")
         }
     }
 }

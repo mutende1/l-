@@ -2,232 +2,162 @@ package com.example.bizeasy.ui.theme.screens.dashboard
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.bizeasy.R
-import com.example.bizeasy.navigation.ROUTE_ADD_PRODUCT
-import com.example.bizeasy.navigation.ROUTE_PLACE_ORDER // Import the new route
-import com.example.bizeasy.navigation.ROUTE_VIEW_PRODUCTS
+import com.example.bizeasy.navigation.* // Assuming your navigation routes are here
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(navController: NavController) {
-    val selectedItem = remember { mutableStateOf(0) }
-    val context = LocalContext.current
     Scaffold(
         bottomBar = {
             NavigationBar(containerColor = Color.Magenta) {
-                NavigationBarItem(
-                    selected = selectedItem.value == 0,
-                    onClick = {
-                        selectedItem.value = 0
-                        val intent = Intent(Intent.ACTION_DIAL).apply {
-                            data = Uri.parse("tel:0794920985")
+                val context = LocalContext.current
+                var selectedItem by remember { mutableStateOf(0) }
+                val items = listOf("Phone", "Email", "Share")
+                val icons = listOf(Icons.Filled.Phone, Icons.Filled.Email, Icons.Filled.Share)
+
+                items.forEachIndexed { index, item ->
+                    NavigationBarItem(
+                        icon = { Icon(icons[index], contentDescription = item) },
+                        label = { Text(item) },
+                        selected = selectedItem == index,
+                        onClick = {
+                            selectedItem = index
+                            when (item) {
+                                "Phone" -> {
+                                    val intent = Intent(Intent.ACTION_DIAL).apply {
+                                        data = Uri.parse("tel:0792492085")
+                                    }
+                                    context.startActivity(intent)
+                                }
+                                "Email" -> {
+                                    val intent = Intent(Intent.ACTION_SENDTO).apply {
+                                        data = Uri.parse("mailto:info@bizeasy.ac.ke")
+                                        putExtra(Intent.EXTRA_SUBJECT, "Inquiry")
+                                        putExtra(Intent.EXTRA_TEXT, "Hello, How do i join your school?")
+                                    }
+                                    context.startActivity(intent)
+                                }
+                                "Share" -> {
+                                    val sendIntent = Intent().apply {
+                                        action = Intent.ACTION_SEND
+                                        putExtra(Intent.EXTRA_TEXT, "Download app here: https://www.download.com")
+                                        type = "text/plain"
+                                    }
+                                    val shareIntent = Intent.createChooser(sendIntent, null)
+                                    context.startActivity(shareIntent)
+                                }
+                            }
                         }
-                        context.startActivity(intent)
-                    },
-                    icon = { Icon(Icons.Filled.Phone, contentDescription = "Phone") },
-                    label = { Text(text = "Phone") },
-                    alwaysShowLabel = true
+                    )
+                }
+            }
+        },
+        topBar = {
+            TopAppBar(
+                title = { Text("LearnIt") },
+                navigationIcon = {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(Icons.Filled.Home, contentDescription = "Home")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(Icons.Filled.Search, contentDescription = "Search")
+                    }
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(Icons.Filled.Person, contentDescription = "Profile")
+                    }
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(Icons.Filled.Close, contentDescription = "Logout")
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Magenta,
+                    titleContentColor = Color.Black,
+                    navigationIconContentColor = Color.Black,
+                    actionIconContentColor = Color.Black
                 )
-                NavigationBarItem(
-                    selected = selectedItem.value == 1,
-                    onClick = {
-                        selectedItem.value = 1
-                        val intent = Intent(Intent.ACTION_SENDTO).apply {
-                            data = Uri.parse("mailto: info@emobilis.ac.ke")
-                            putExtra(Intent.EXTRA_SUBJECT, "Inquiry")
-                            putExtra(Intent.EXTRA_TEXT, "Hello, How do i join your school?")
-                        }
-                        context.startActivity(intent)
-                    },
-                    icon = { Icon(Icons.Filled.Email, contentDescription = "Email") },
-                    label = { Text(text = "EMail") },
-                    alwaysShowLabel = true
-                )
-                NavigationBarItem(
-                    selected = selectedItem.value == 2,
-                    onClick = {
-                        selectedItem.value = 2
-                        val sendIntent = Intent().apply {
-                            action = Intent.ACTION_SEND
-                            putExtra(Intent.EXTRA_TEXT, "Download app here: https://www.download.com")
-                            type = "text/plain"
-                        }
-                        val shareIntent = Intent.createChooser(sendIntent, null)
-                        context.startActivity(shareIntent)
-                    },
-                    icon = { Icon(Icons.Filled.Share, contentDescription = "Share") },
-                    label = { Text(text = "Share") },
-                    alwaysShowLabel = true
-                )
+            )
+        },
+        floatingActionButton = {  // Added FAB here
+            FloatingActionButton(
+                onClick = {
+                    navController.navigate(ROUTE_ADD_NOTE) // Navigate to your notes screen
+                },
+                containerColor = Color.Magenta,
+                contentColor = Color.White
+            ) {
+                Icon(Icons.Filled.Add, contentDescription = "Add Notes")
             }
         }
-    )
-    { innerPadding ->
+    ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
-            Image(
-                painter = painterResource(id = R.drawable.background),
-                contentDescription = "Dashboard background image",
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier.fillMaxSize()
-            )
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TopAppBar(
-                    title = { Text(text = "BizRAHISI") },
-                    navigationIcon = {
-                        IconButton(onClick = {}) {
-                            Icon(
-                                imageVector = Icons.Filled.Home,
-                                contentDescription = "Home"
-                            )
-                        }
-                    },
-                    actions = {
-                        IconButton(onClick = {}) {
-                            Icon(
-                                Icons.Filled.Person,
-                                contentDescription = "Profile"
-                            )
-                        }
-                        IconButton(onClick = {}) {
-                            Icon(
-                                Icons.Filled.Search,
-                                contentDescription = "Search"
-                            )
-                        }
-                        IconButton(onClick = {}) {
-                            Icon(
-                                Icons.Filled.Close,
-                                contentDescription = "Logout"
-                            )
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Magenta,
-                        titleContentColor = Color.Black,
-                        navigationIconContentColor = Color.Black,
-                        actionIconContentColor = Color.Black
-                    )
-                )
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Card(
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .fillMaxWidth(0.8f)
-                            .clickable {
-                                navController.navigate(ROUTE_PLACE_ORDER) // Navigate to the OrderScreen
-                            },
-                        shape = RoundedCornerShape(20.dp),
-                        elevation = CardDefaults.cardElevation(10.dp),
-                        colors = CardDefaults.cardColors(Color.Black)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .height(100.dp)
-                                .padding(25.dp),
-                            contentAlignment = Alignment.Center
-                        ) { Text(text = "Products") }
-                    }
-
-                    Card(
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .fillMaxWidth(0.8f)
-                            .clickable { // Make the Orders card clickable
-                                navController.navigate(ROUTE_VIEW_PRODUCTS) // Navigate to the ViewProductsScreen
-                            },
-                        shape = RoundedCornerShape(20.dp),
-                        elevation = CardDefaults.cardElevation(10.dp),
-                        colors = CardDefaults.cardColors(Color.Gray)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .height(100.dp)
-                                .padding(25.dp),
-                            contentAlignment = Alignment.Center
-                        ) { Text(text = "Orders") }
-                    }
-                    Card(
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .fillMaxWidth(0.8f),
-                        shape = RoundedCornerShape(20.dp),
-                        elevation = CardDefaults.cardElevation(10.dp),
-                        colors = CardDefaults.cardColors(Color.Gray)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .height(100.dp)
-                                .padding(25.dp),
-                            contentAlignment = Alignment.Center
-                        ) { Text(text = "Payments") }
-                    }
-                    Card(
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .fillMaxWidth(0.8f),
-                        shape = RoundedCornerShape(20.dp),
-                        elevation = CardDefaults.cardElevation(10.dp),
-                        colors = CardDefaults.cardColors(Color.Gray)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .height(100.dp)
-                                .padding(25.dp),
-                            contentAlignment = Alignment.Center
-                        ) { Text(text = "Sales Report") }
-                    }
+                LearningCard(title = "Learning Cybersecurity") {
+                    navController.navigate(ROUTE_CYBERSECURITY_TOPICS)
+                }
+                LearningCard(title = "Learning Data Science") {
+                    navController.navigate(ROUTE_DATA_STRUCTURES_ALGORITHMS_CONTENT)
+                }
+                LearningCard(title = "Learning MIT") {
+                    navController.navigate(ROUTE_MIT_TOPICS)
+                }
+                LearningCard(title = "Learning Software Development") {
+                    navController.navigate(ROUTE_SOFTWARE_DEVELOPMENT_TOPICS)
+                }
+                LearningCard(title = "Learning Android Development") {
+                    navController.navigate(ROUTE_ANDROID_DEVELOPMENT_TOPICS)
+                }
+                LearningCard(title = "Learning Cloud Computing") {
+                    navController.navigate(ROUTE_CLOUD_COMPUTING_TOPICS)
                 }
             }
+
         }
     }
+
 }
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun DashboardScreenPreview() {
-    DashboardScreen(rememberNavController())
+fun LearningCard(title: String, onClick: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp) // Add horizontal padding for better spacing
+            .clickable(onClick = onClick),
+        shape = MaterialTheme.shapes.medium,
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.Black, contentColor = Color.White)
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(25.dp) // Increase padding for better touch target
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally),
+            contentAlignment = Alignment.CenterStart // Align text to the start
+        ) {
+            Text(text = title, style = MaterialTheme.typography.titleLarge)
+        }
+    }
 }

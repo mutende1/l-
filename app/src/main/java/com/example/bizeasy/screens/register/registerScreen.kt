@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -57,20 +58,20 @@ fun RegisterScreen(navController: NavController){
     var password by remember { mutableStateOf(value = "") }
     val context = LocalContext.current
     val passwordVisible by remember { mutableStateOf(false) }
-    Column (modifier = Modifier.fillMaxHeight().fillMaxWidth(), verticalArrangement = Arrangement.Center){
+    Column (modifier = Modifier.fillMaxSize().background(Color.Black).fillMaxWidth(), verticalArrangement = Arrangement.Center){
         Text(text = "Register Here!!",
             fontSize = 40.sp,
-            color = Color.Black,
+            color = Color.Magenta,
             fontFamily = FontFamily.SansSerif,
             fontStyle = FontStyle.Normal,
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .background(Color.Gray)
+                .background(Color.Black)
                 .padding(20.dp)
                 .fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(10.dp))
-        Image(painter = painterResource(R.drawable.logo),
+        Image(painter = painterResource(R.drawable.lopi),
             contentDescription = "logo",
             modifier = Modifier
                 .wrapContentHeight()
@@ -101,7 +102,7 @@ fun RegisterScreen(navController: NavController){
         Button(onClick = {
             authViewModel.signup(firstname,lastname, email, password, navController, context)
         }, modifier = Modifier.wrapContentWidth().align(Alignment.CenterHorizontally), colors = ButtonDefaults.buttonColors(
-            Color.Black)) {
+            Color.Magenta)) {
             Text(text = "Register")
         }
         Spacer(modifier = Modifier.height(10.dp))
